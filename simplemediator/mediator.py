@@ -3,13 +3,15 @@ from .errors import *
 
 __all__ = ['Mediator']
 
+
 class Mediator ():
     contexts = {}
+
     @staticmethod
     def getContext(namespace='default'):
         if type(namespace) != str:
             raise InvalidNamespaceError()
-            
+
         if (Mediator.contexts.get(namespace)):
             return Mediator.contexts[namespace]
         else:
@@ -27,13 +29,16 @@ class Mediator ():
 
         Mediator.contexts.get(namespace).removeAll()
         Mediator.contexts.__delitem__(namespace)
-    
+
     @staticmethod
     def destroyAllContexts():
-        [Mediator.destroyContext(namespace) for namespace in Mediator.getContextList()]
-    
+        [
+            Mediator.destroyContext(namespace)
+            for namespace in Mediator.getContextList()
+        ]
+
     @staticmethod
-    def onContextEvent(event_name:str, namespace:str='default'):
+    def onContextEvent(event_name: str, namespace: str='default'):
         if type(event_name) != str:
             raise InvalidEventNameError()
         if type(namespace) != str:
