@@ -8,7 +8,7 @@ class Mediator ():
     contexts = {}
 
     @staticmethod
-    def getContext(namespace='default'):
+    def get_context(namespace='default'):
         if type(namespace) != str:
             raise InvalidNamespaceError()
 
@@ -19,42 +19,42 @@ class Mediator ():
             return Mediator.contexts[namespace]
 
     @staticmethod
-    def getContextList():
+    def get_context_list():
         return list(Mediator.contexts.keys())
 
     @staticmethod
-    def destroyContext(namespace='default'):
+    def destroy_context(namespace='default'):
         if type(namespace) != str:
             raise InvalidNamespaceError()
 
-        Mediator.contexts.get(namespace).removeAll()
+        Mediator.contexts.get(namespace).remove_all()
         Mediator.contexts.__delitem__(namespace)
 
     @staticmethod
-    def destroyAllContexts():
+    def destroy_all_contexts():
         [
-            Mediator.destroyContext(namespace)
-            for namespace in Mediator.getContextList()
+            Mediator.destroy_context(namespace)
+            for namespace in Mediator.get_context_list()
         ]
 
     @staticmethod
-    def onContextEvent(event_name: str, namespace: str='default'):
+    def on_context_event(event_name: str, namespace: str = 'default'):
         if type(event_name) != str:
             raise InvalidEventNameError()
         if type(namespace) != str:
             raise InvalidNamespaceError()
 
         def decorator(n):
-            context = Mediator.getContext(namespace)
+            context = Mediator.get_context(namespace)
             context.on(event_name, n)
         return decorator
 
     @staticmethod
-    async def emitContextEvent(event_name, data, namespace='default'):
+    async def emit_context_event(event_name, data, namespace: str = 'default'):
         if type(event_name) != str:
             raise InvalidEventNameError()
         if type(namespace) != str:
             raise InvalidNamespaceError()
 
-        context = Mediator.getContext(namespace)
+        context = Mediator.get_context(namespace)
         await context.emit(event_name, data)
